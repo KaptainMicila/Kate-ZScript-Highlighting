@@ -14,3 +14,8 @@ Custom .xml highlight definition files are located in **org.kde.syntax-highlight
 ***IMPORTANT**: for me, it was $HOME/.var/app/org.kde.kate/data/org.kde.syntax-highlighting/syntax/, where the "org.kde.syntax-highlighting/syntax/ **did not exist**, so I had to create it."*
 #### WINDOWS
 On Windows these files are located **%USERPROFILE%/AppData/Local/org.kde.syntax-highlighting/syntax**. %USERPROFILE% usually expands to C:\\Users\\user.
+
+### SPECIAL THANKS
+- [Nash Muhandes](https://github.com/nashmuhandes) for giving me the will to make this syntax highlighter;
+- [marrub--](https://github.com/marrub--) for the ZScript documentation;
+- [KDE](https://kde.org/) for giving me the text editor where to write the code;
