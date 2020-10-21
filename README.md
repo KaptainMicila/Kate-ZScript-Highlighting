@@ -25,3 +25,8 @@ On Windows these files are located **%USERPROFILE%/AppData/Local/org.kde.syntax-
 - [Nash Muhandes](https://github.com/nashmuhandes) for giving me the will to make this syntax highlighter;
 - [marrub--](https://github.com/marrub--) for the ZScript documentation;
 - [KDE](https://kde.org/) for giving me the text editor where to write the code;
+
+---
+### SAMPLE IMAGE
+base.zs
+![SAMPLE IMAGE](https://i.imgur.com/NPhm0Ye.png)
