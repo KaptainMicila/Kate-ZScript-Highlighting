@@ -6,7 +6,12 @@ Syntax highlighter made with the help from: [marrub--](https://github.com/marrub
 ## HOW DO I USE IT?
 ### PREREQUISITES
 - [Kate text editor](https://kate-editor.org/get-it/)
-### WHERE TO PUT THE .xml FILE
+
+### GETTING THE .XML FILE
+You can either get it from the source code from the main branch, or go the the "releases" section and get one version from there.
+
+***IMPORTANT:*** Getting it from the main branch can be dangereous, as that's where the editing appears.
+### WHERE TO PUT THE .XML FILE
 From the "Overview" section of Katepart's documentation:
 #### LINUX
 Custom .xml highlight definition files are located in **org.kde.syntax-highlighting/syntax/** in your user folder found with qtpaths--paths GenericDataLocation which usually is **$HOME/.local/share**
