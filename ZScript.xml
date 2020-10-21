@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="ZScript" version="0.8" kateversion="5.74.0" section="Sources" extensions="*.zs;*.zcs">
+    <highlighting>
+<!-- List for all standard keywords -->
+        <list name="Standard">
+            <item>action</item>
+            <item>clearscope</item>
+            <item>deprecated</item>
+            <item>final</item>
+            <item>native</item>
+            <item>override</item>
+            <item>play</item>
+            <item>private</item>
+            <item>protected</item>
+            <item>static</item>
+            <item>ui</item>
+            <item>vararg</item>
+            <item>virtual</item>
+            <item>virtualscope</item>
+            <item>abstract</item>
+            <item>replaces</item>
+            <item>readonly</item>
+            <item>extend</item>
+            <item>let</item>
+            <item>const</item>
+        </list>
+<!-- List for all types -->
+        <list name="Types">
+            <item>int</item>
+            <item>uint</item>
+            <item>int8</item>
+            <item>uint8</item>
+            <item>int16</item>
+            <item>uint16</item>
+            <item>byte</item>
+            <item>sbyte</item>
+            <item>short</item>
+            <item>ushort</item>
+            <item>float</item>
+            <item>float32</item>
+            <item>float64</item>
+            <item>double</item>
+            <item>string</item>
+            <item>name</item>
+            <item>color</item>
+            <item>vector2</item>
+            <item>vector3</item>
+            <item>array</item>
+            <item>map</item>
+            <item>actor</item>
+            <item>bool</item>
+            <item>sound</item>
+            <item>spriteid</item>
+            <item>state</item>
+            <item>statelabel</item>
+            <item>textureid</item>
+            <item>void</item>
+            <item>voidptr</item>
+            <item>meta</item>
+            <item>internal</item>
+            <item>latent</item>
+            <item>transient</item>
+            <item>class</item>
+            <item>struct</item>
+            <item>enum</item>
+        </list>
+<!-- List for all "directives". -->
+        <list name="Directives">
+            <item>version</item>
+        </list>
+<!-- List of elements used for control flows -->
+        <list name="ControlFlow">
+            <item>if</item>
+            <item>else</item>
+            <item>for</item>
+            <item>return</item>
+            <item>do</item>
+            <item>while</item>
+            <item>switch</item>
+            <item>continue</item>
+            <item>break</item>
+            <item>case</item>
+        </list>
+<!--List of operators that are NOT single signs but actual words.
+
+These aren't rendered in a different way from the normal text in the default KDE theme.
+To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->Highlighting text styles"
+
+* This part can be skipped using the standard keybind Ctrl+Shift+,-->
+        <list name="Operators">
+            <item>alignof</item>
+            <item>sizeof</item>
+            <item>cross</item>
+            <item>dot</item>
+            <item>is</item>
+        </list>
+<!-- List of contextes -->
+        <contexts>
+            <context attribute="Normal" lineEndContext="#pop" name="Normal" >
+                <keyword attribute="Keyword" context="#stay" String="Standard" />
+                <keyword attribute="Type" context="#stay" String="Types" />
+                <keyword attribute="Directive" context="#stay" String="Directives"/>
+                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow" />
+                <keyword attribute="Operator" context="#stay" String="Operators" />
+                <DetectChar attribute="String" context="string" char="&quot;" />
+                <DetectChar attribute="Un-Eascaped-String" context="uestring" char="&apos;" />
+                <Detect2Chars attribute="Comment" context="comment" char="/" char1="/" />
+                <Detect2Chars attribute="Comment" context="Multi-line Comment" char="/" char1="*" beginRegion="RegionComment"/>
+                <DetectChar attribute="Import" context="import" name="Import" char="#"/>
+                <RegExpr attribute="Function" context="function" name="Function" String="\w+(?=\s*\()" />
+            </context>
+<!-- List of "inner" contextes -->
+            <context name="string" attribute="String" lineEndContext="#stay" >
+                <DetectChar attribute="String" context="#pop" char="&quot;" />
+            </context>
+            <context name="uestring" attribute="Un-Eascaped-String" lineEndContext="#stay" >
+                <DetectChar attribute="Un-Eascaped-String" context="#pop" char="&apos;" />
+            </context>
+            <context name="comment" attribute="Comment" lineEndContext="#pop" >
+                <Detect2Chars attribute="Comment" context="#stay" char="/" char1="/" />
+            </context>
+            <context name="Multi-line Comment" attribute="Comment" lineEndContext="#stay">
+                <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" dynamic="true" endRegion="RegionComment"/>
+            </context>
+            <context name="import" attribute="Import" lineEndContext="#pop">
+                <DetectChar attribute="Import" context="#pop" char=" " />
+            </context>
+        </contexts>
+<!-- List of the itemDatas (the ones that give the elements colours) -->
+        <itemDatas>
+            <itemData name="Normal" defStyleNum="dsNormal" />
+            <itemData name="Keyword" defStyleNum="dsKeyword" />
+            <itemData name="String" defStyleNum="dsString" />
+            <itemData name="Un-Eascaped-String" defStyleNum="dsVerbatimString" />
+            <itemData name="Comment" defStyleNum="dsComment" />
+            <itemData name="Import" defStyleNum="dsImport" />
+            <itemData name="Type" defStyleNum="dsDataType" />
+            <itemData name="Directive" defStyleNum="dsExtension" />
+            <itemData name="ControlFlow" defStyleNum="dsControlFlow" />
+            <itemData name="Operator" defStyleNum="dsOperator" />
+            <itemData name="Function" defStyleNum="dsFunction" />
+        </itemDatas>
+    </highlighting>
+<!-- Syntax configuration -->
+    <general>
+<!-- Quick comment (Ctrl + /) configuration -->
+        <comments>
+            <comment name="singleLine" start="//"/>
+            <comment name="multiLine" start="/*" end="*/"/>
+        </comments>
+<!-- Keywords are case sensitive -->
+        <keywords casesensitive="0"/>
+    </general>
+</language>
