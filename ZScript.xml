@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<language name="ZScript" version="0.8" kateversion="5.74.0" section="Sources" extensions="*.zs;*.zcs">
+<language name="ZScript" version="0.9" kateversion="5.74.0" section="Sources" extensions="*.zs;*.zcs" mimetype="text/ZScript" license="MIT" author="Micila &quot;Kaptain&quot; Micillotto">
     <highlighting>
 <!-- List for all standard keywords -->
         <list name="Standard">
@@ -94,51 +94,132 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>dot</item>
             <item>is</item>
         </list>
+        <list name="StateControlFlow">
+            <item>loop</item>
+            <item>stop</item>
+            <item>wait</item>
+            <item>fail</item>
+            <item>goto</item>
+        </list>
+        <list name="States">
+            <item>spawn</item>
+            <item>idle</item>
+            <item>see</item>
+            <item>melee</item>
+            <item>missile</item>
+            <item>pain</item>
+            <item>death</item>
+            <item>death.sky</item>
+            <item>death.extreme</item>
+            <item>xdeath</item>
+            <item>death.fire</item>
+            <item>burn</item>
+            <item>death.ice</item>
+            <item>ice</item>
+            <item>death.disintegrate</item>
+            <item>disintegrate</item>
+            <item>raise</item>
+            <item>heal</item>
+            <item>crash</item>
+            <item>crash.extreme</item>
+            <item>crush</item>
+            <item>wound</item>
+            <item>greetings</item>
+            <item>yes</item>
+            <item>no</item>
+            <item>active</item>
+            <item>inactive</item>
+            <item>bounce</item>
+        </list>
+        <list name="StateKeywords">
+            <item>bright</item>
+            <item>canraise</item>
+            <item>fast</item>
+            <item>light</item>
+            <item>nodelay</item>
+            <item>offset</item>
+            <item>slow</item>
+        </list>
 <!-- List of contextes -->
         <contexts>
-            <context attribute="Normal" lineEndContext="#pop" name="Normal" >
-                <keyword attribute="Keyword" context="#stay" String="Standard" />
-                <keyword attribute="Type" context="#stay" String="Types" />
+            <context attribute="Normal" lineEndContext="#pop" name="Normal">
+                <keyword attribute="Keyword" context="#stay" String="Standard"/>
+                <Float attribute="Integer" context="#stay"/>
+                <Int attribute="Integer" context="#stay"/>
+                <keyword attribute="Type" context="#stay" String="Types"/>
                 <keyword attribute="Directive" context="#stay" String="Directives"/>
-                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow" />
-                <keyword attribute="Operator" context="#stay" String="Operators" />
-                <DetectChar attribute="String" context="string" char="&quot;" />
-                <DetectChar attribute="Un-Eascaped-String" context="uestring" char="&apos;" />
-                <Detect2Chars attribute="Comment" context="comment" char="/" char1="/" />
+                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow"/>
+                <keyword attribute="Operator" context="#stay" String="Operators"/>
+                <DetectChar attribute="String" context="string" char="&quot;"/>
+                <DetectChar attribute="Un-Eascaped-String" context="uestring" char="&apos;"/>
+                <Detect2Chars attribute="Comment" context="comment" char="/" char1="/"/>
                 <Detect2Chars attribute="Comment" context="Multi-line Comment" char="/" char1="*" beginRegion="RegionComment"/>
                 <DetectChar attribute="Import" context="import" name="Import" char="#"/>
-                <RegExpr attribute="Function" context="function" name="Function" String="\w+(?=\s*\()" />
+                <RegExpr attribute="Function" context="#stay" name="Function" String="(?:\w+?(?=\s*?\())"/>
+                <RegExpr attribute="DefaultBlock" context="#pop!defaultblock" name="DefaultBlock" String="(?:\w*?default\s*?{)"
+                insensitive="true"/>
+                <RegExpr attribute="StatesBlock" context="#pop!statesblock" name="statesblock" String="(?:\w*?states\s*?{)" 
+                insensitive="true"/>
             </context>
 <!-- List of "inner" contextes -->
-            <context name="string" attribute="String" lineEndContext="#stay" >
-                <DetectChar attribute="String" context="#pop" char="&quot;" />
+            <context name="string" attribute="String" lineEndContext="#stay">
+                <DetectChar attribute="String" context="#pop" char="&quot;"/>
             </context>
-            <context name="uestring" attribute="Un-Eascaped-String" lineEndContext="#stay" >
-                <DetectChar attribute="Un-Eascaped-String" context="#pop" char="&apos;" />
+            <context name="uestring" attribute="Un-Eascaped-String" lineEndContext="#stay">
+                <DetectChar attribute="Un-Eascaped-String" context="#pop" char="&apos;"/>
             </context>
-            <context name="comment" attribute="Comment" lineEndContext="#pop" >
-                <Detect2Chars attribute="Comment" context="#stay" char="/" char1="/" />
+            <context name="comment" attribute="Comment" lineEndContext="#pop">
+                <Detect2Chars attribute="Comment" context="#stay" char="/" char1="/"/>
             </context>
             <context name="Multi-line Comment" attribute="Comment" lineEndContext="#stay">
                 <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" dynamic="true" endRegion="RegionComment"/>
             </context>
             <context name="import" attribute="Import" lineEndContext="#pop">
-                <DetectChar attribute="Import" context="#pop" char=" " />
+                <DetectChar attribute="Import" context="#pop" char=" "/>
+            </context>
+<!-- Default block contextes -->
+            <context name="defaultblock" attribute="DefaultBlock" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop" char="}"/>
+                <DetectChar attribute="Normal" context="attribute" name="Attribute" char="+"/>
+                <DetectChar attribute="String" context="string" char="&quot;"/>
+                <Float attribute="Integer" context="#stay"/>
+                <Int attribute="Integer" context="#stay"/>
+            </context>
+            <context name="attribute" attribute="Attribute" lineEndContext="#pop">
+                <DetectChar attribute="Attribute" context="#pop" char=" "/>
+            </context>
+<!-- States block contextes -->
+            <context name="statesblock" attribute="StatesBlock" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop" char="}"/>
+                <DetectChar attribute="String" context="string" char="&quot;" />
+                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow"/>
+                <keyword attribute="ControlFlow" context="#stay" String="StateControlFlow"/>
+                <keyword attribute="State" context="#stay" String="States"/>
+                <keyword attribute="Keyword" context="#stay" String="StateKeywords"/>
+                <RegExpr attribute="Function" context="#stay" name="Function" String="(?:\w+?(?=\s*?\())"/>
+                <RegExpr attribute="Function" context="#stay" name="Function" String="(?:A_(?&lt;=A_)\S*?(?=;))"/>
+                <Float attribute="Integer" context="#stay"/>
+                <Int attribute="Integer" context="#stay"/>
             </context>
         </contexts>
 <!-- List of the itemDatas (the ones that give the elements colours) -->
         <itemDatas>
-            <itemData name="Normal" defStyleNum="dsNormal" />
-            <itemData name="Keyword" defStyleNum="dsKeyword" />
-            <itemData name="String" defStyleNum="dsString" />
-            <itemData name="Un-Eascaped-String" defStyleNum="dsVerbatimString" />
-            <itemData name="Comment" defStyleNum="dsComment" />
-            <itemData name="Import" defStyleNum="dsImport" />
-            <itemData name="Type" defStyleNum="dsDataType" />
-            <itemData name="Directive" defStyleNum="dsExtension" />
-            <itemData name="ControlFlow" defStyleNum="dsControlFlow" />
-            <itemData name="Operator" defStyleNum="dsOperator" />
-            <itemData name="Function" defStyleNum="dsFunction" />
+            <itemData name="Normal" defStyleNum="dsNormal"/>
+            <itemData name="DefaultBlock" defStyleNum="dsNormal"/>
+            <itemData name="Keyword" defStyleNum="dsKeyword"/>
+            <itemData name="String" defStyleNum="dsString"/>
+            <itemData name="Un-Eascaped-String" defStyleNum="dsVerbatimString"/>
+            <itemData name="Comment" defStyleNum="dsComment"/>
+            <itemData name="Import" defStyleNum="dsImport"/>
+            <itemData name="Type" defStyleNum="dsDataType"/>
+            <itemData name="Directive" defStyleNum="dsExtension"/>
+            <itemData name="ControlFlow" defStyleNum="dsControlFlow"/>
+            <itemData name="Operator" defStyleNum="dsOperator"/>
+            <itemData name="Function" defStyleNum="dsFunction"/>
+            <itemData name="Attribute" defStyleNum="dsAttribute"/>
+            <itemData name="State" defStyleNum="dsDataType"/>
+            <itemData name="Integer" defStyleNum="dsDecVal"/>
+            <itemData name="Float" defStyleNum="dsFloat"/>
         </itemDatas>
     </highlighting>
 <!-- Syntax configuration -->
@@ -150,5 +231,9 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
         </comments>
 <!-- Keywords are case sensitive -->
         <keywords casesensitive="0"/>
+        <folding indentationsensitive="1"/>
+        <emptyLines>
+            <emptyLine regexpr="\s*?"/>
+        </emptyLines>
     </general>
 </language>
