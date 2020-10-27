@@ -190,6 +190,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <!-- Default block contextes -->
             <!-- Initiation -->
             <context name="initiatedefaultblock" attribute="Normal" lineEndContext="#stay">
+                <RegExpr String="[^{\s]" context="#pop" />
                 <DetectChar attribute="Normal" context="#pop!defaultblock" char="{" />
             </context>
             <!-- Syntaxt -->
@@ -208,8 +209,9 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <!-- Initiation -->
             <context name="initiatestatesblock" attribute="Normal" lineEndContext="#stay">
                 <DetectChar attribute="Normal" context="#pop!statesblock" char="{" />
+                <RegExpr String="[^{\s]" context="#pop" />
             </context>
-            <!-- Syntaxt -->
+            <!-- Syntax -->
             <context name="statesblock" attribute="StatesBlock" lineEndContext="#stay">
                 <DetectChar attribute="Normal" context="#pop" char="}" />
                 <DetectChar attribute="String" context="string" char="&quot;" />
