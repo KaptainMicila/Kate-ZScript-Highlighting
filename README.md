@@ -29,5 +29,5 @@ On Windows these files are located **%USERPROFILE%/AppData/Local/org.kde.syntax-
 
 ---
 ### SAMPLE IMAGE
-base.zs
-![SAMPLE IMAGE](https://i.imgur.com/NPhm0Ye.png)
+archvile.zs
+![SAMPLE IMAGE](https://i.imgur.com/1NiaExb.png)
