@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<language name="ZScript" version="0.9" kateversion="5.74.0" section="Sources" extensions="*.zs;*.zcs" mimetype="text/ZScript" license="MIT" author="Micila &quot;Kaptain&quot; Micillotto">
+<language
+    name="ZScript"
+    version="1.0"
+    kateversion="5.74.0"
+    section="Sources"
+    extensions="*.zs;*.zcs"
+    mimetype="text/ZScript"
+    license="MIT"
+    author="Micila &quot;Kaptain&quot; Micillotto"
+    indenter="cstyle"
+    >
     <highlighting>
 <!-- List for all standard keywords -->
         <list name="Standard">
@@ -63,6 +73,7 @@
             <item>class</item>
             <item>struct</item>
             <item>enum</item>
+            <item>self</item>
         </list>
 <!-- List for all "directives". -->
         <list name="Directives">
@@ -94,6 +105,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>dot</item>
             <item>is</item>
         </list>
+<!-- The extra control flows in "states" blocks -->
         <list name="StateControlFlow">
             <item>loop</item>
             <item>stop</item>
@@ -101,6 +113,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>fail</item>
             <item>goto</item>
         </list>
+<!-- The avaible states in the "states" blocks -->
         <list name="States">
             <item>spawn</item>
             <item>idle</item>
@@ -131,6 +144,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>inactive</item>
             <item>bounce</item>
         </list>
+<!-- The extra keywords for the "state" blocks -->
         <list name="StateKeywords">
             <item>bright</item>
             <item>canraise</item>
@@ -143,6 +157,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
 <!-- List of contextes -->
         <contexts>
             <context attribute="Normal" lineEndContext="#pop" name="Normal">
+                <DetectSpaces/>
                 <keyword attribute="Keyword" context="#stay" String="Standard"/>
                 <Float attribute="Integer" context="#stay"/>
                 <Int attribute="Integer" context="#stay"/>
@@ -156,39 +171,57 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
                 <Detect2Chars attribute="Comment" context="Multi-line Comment" char="/" char1="*" beginRegion="RegionComment"/>
                 <DetectChar attribute="Import" context="import" name="Import" char="#"/>
                 <RegExpr attribute="Function" context="#stay" name="Function" String="(?:\w+?(?=\s*?\())"/>
-                <RegExpr attribute="DefaultBlock" context="#pop!defaultblock" name="DefaultBlock" String="(?:\w*?default\s*?{)"
-                insensitive="true"/>
-                <RegExpr attribute="StatesBlock" context="#pop!statesblock" name="statesblock" String="(?:\w*?states\s*?{)" 
-                insensitive="true"/>
+<!-- Lines for "states" and "default" blocks, used for actor classes -->
+<!-- These have a different syntax from the rest, so they need both different contextes, like they're different languages. -->
+                <StringDetect attribute="Directive" context="#pop!initiatedefaultblock" name="InitiateDefaultBlock" 
+                String="default" insensitive="true" />
+                <StringDetect attribute="Directive" context="#pop!initiatestatesblock" name="InitiateStatesBlock" 
+                String="states" insensitive="true" />
             </context>
 <!-- List of "inner" contextes -->
+<!-- Strings -->
             <context name="string" attribute="String" lineEndContext="#stay">
                 <DetectChar attribute="String" context="#pop" char="&quot;"/>
             </context>
+<!-- Strings without escaping -->
             <context name="uestring" attribute="Un-Eascaped-String" lineEndContext="#stay">
                 <DetectChar attribute="Un-Eascaped-String" context="#pop" char="&apos;"/>
             </context>
+<!-- Comments -->
             <context name="comment" attribute="Comment" lineEndContext="#pop">
                 <Detect2Chars attribute="Comment" context="#stay" char="/" char1="/"/>
             </context>
+<!-- Multiple line comments -->
             <context name="Multi-line Comment" attribute="Comment" lineEndContext="#stay">
                 <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" dynamic="true" endRegion="RegionComment"/>
             </context>
+<!-- Import statemens -->
             <context name="import" attribute="Import" lineEndContext="#pop">
                 <DetectChar attribute="Import" context="#pop" char=" "/>
             </context>
 <!-- Default block contextes -->
-            <context name="defaultblock" attribute="DefaultBlock" lineEndContext="#stay">
+<!-- Initiation -->
+            <context name="initiatedefaultblock" attribute="Normal" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop!defaultblock" char="{"/>
+            </context>
+<!-- Syntaxt -->
+            <context name="defaultblock" attribute="Normal" lineEndContext="#stay">
                 <DetectChar attribute="Normal" context="#pop" char="}"/>
                 <DetectChar attribute="Normal" context="attribute" name="Attribute" char="+"/>
                 <DetectChar attribute="String" context="string" char="&quot;"/>
                 <Float attribute="Integer" context="#stay"/>
                 <Int attribute="Integer" context="#stay"/>
             </context>
+<!-- Attributes -->
             <context name="attribute" attribute="Attribute" lineEndContext="#pop">
                 <DetectChar attribute="Attribute" context="#pop" char=" "/>
             </context>
 <!-- States block contextes -->
+<!-- Initiation -->
+            <context name="initiatestatesblock" attribute="Normal" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop!statesblock" char="{"/>
+            </context>
+<!-- Syntaxt -->
             <context name="statesblock" attribute="StatesBlock" lineEndContext="#stay">
                 <DetectChar attribute="Normal" context="#pop" char="}"/>
                 <DetectChar attribute="String" context="string" char="&quot;" />
@@ -205,7 +238,6 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
 <!-- List of the itemDatas (the ones that give the elements colours) -->
         <itemDatas>
             <itemData name="Normal" defStyleNum="dsNormal"/>
-            <itemData name="DefaultBlock" defStyleNum="dsNormal"/>
             <itemData name="Keyword" defStyleNum="dsKeyword"/>
             <itemData name="String" defStyleNum="dsString"/>
             <itemData name="Un-Eascaped-String" defStyleNum="dsVerbatimString"/>
@@ -232,8 +264,5 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
 <!-- Keywords are case sensitive -->
         <keywords casesensitive="0"/>
         <folding indentationsensitive="1"/>
-        <emptyLines>
-            <emptyLine regexpr="\s*?"/>
-        </emptyLines>
     </general>
 </language>
