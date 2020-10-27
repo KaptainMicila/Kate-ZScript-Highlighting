@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<language
-    name="ZScript"
-    version="1.0"
-    kateversion="5.74.0"
-    section="Sources"
-    extensions="*.zs;*.zcs"
-    mimetype="text/ZScript"
-    license="MIT"
-    author="Micila &quot;Kaptain&quot; Micillotto"
-    indenter="cstyle"
-    >
+<language xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ZScript.xsd" name="ZScript" version="2" kateversion="5.74" section="Sources" extensions="*.zs;*.zcs" mimetype="text/ZScript" license="MIT" author="Micila &quot;Kaptain&quot; Micillotto" indenter="cstyle">
     <highlighting>
-<!-- List for all standard keywords -->
+        <!-- List for all standard keywords -->
         <list name="Standard">
             <item>action</item>
             <item>clearscope</item>
@@ -34,7 +24,7 @@
             <item>let</item>
             <item>const</item>
         </list>
-<!-- List for all types -->
+        <!-- List for all types -->
         <list name="Types">
             <item>int</item>
             <item>uint</item>
@@ -75,11 +65,11 @@
             <item>enum</item>
             <item>self</item>
         </list>
-<!-- List for all "directives". -->
+        <!-- List for all "directives". -->
         <list name="Directives">
             <item>version</item>
         </list>
-<!-- List of elements used for control flows -->
+        <!-- List of elements used for control flows -->
         <list name="ControlFlow">
             <item>if</item>
             <item>else</item>
@@ -92,7 +82,7 @@
             <item>break</item>
             <item>case</item>
         </list>
-<!--List of operators that are NOT single signs but actual words.
+        <!--List of operators that are NOT single signs but actual words.
 
 These aren't rendered in a different way from the normal text in the default KDE theme.
 To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->Highlighting text styles"
@@ -105,7 +95,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>dot</item>
             <item>is</item>
         </list>
-<!-- The extra control flows in "states" blocks -->
+        <!-- The extra control flows in "states" blocks -->
         <list name="StateControlFlow">
             <item>loop</item>
             <item>stop</item>
@@ -113,7 +103,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>fail</item>
             <item>goto</item>
         </list>
-<!-- The avaible states in the "states" blocks -->
+        <!-- The avaible states in the "states" blocks -->
         <list name="States">
             <item>spawn</item>
             <item>idle</item>
@@ -144,7 +134,7 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>inactive</item>
             <item>bounce</item>
         </list>
-<!-- The extra keywords for the "state" blocks -->
+        <!-- The extra keywords for the "state" blocks -->
         <list name="StateKeywords">
             <item>bright</item>
             <item>canraise</item>
@@ -154,115 +144,113 @@ To do so, go to "Settings->Configure Kate*->Editor Component->Fonts & Colours->H
             <item>offset</item>
             <item>slow</item>
         </list>
-<!-- List of contextes -->
+        <!-- List of contextes -->
         <contexts>
             <context attribute="Normal" lineEndContext="#pop" name="Normal">
-                <DetectSpaces/>
-                <keyword attribute="Keyword" context="#stay" String="Standard"/>
-                <Float attribute="Integer" context="#stay"/>
-                <Int attribute="Integer" context="#stay"/>
-                <keyword attribute="Type" context="#stay" String="Types"/>
-                <keyword attribute="Directive" context="#stay" String="Directives"/>
-                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow"/>
-                <keyword attribute="Operator" context="#stay" String="Operators"/>
-                <DetectChar attribute="String" context="string" char="&quot;"/>
-                <DetectChar attribute="Un-Eascaped-String" context="uestring" char="&apos;"/>
-                <Detect2Chars attribute="Comment" context="comment" char="/" char1="/"/>
-                <Detect2Chars attribute="Comment" context="Multi-line Comment" char="/" char1="*" beginRegion="RegionComment"/>
-                <DetectChar attribute="Import" context="import" name="Import" char="#"/>
-                <RegExpr attribute="Function" context="#stay" name="Function" String="(?:\w+?(?=\s*?\())"/>
-<!-- Lines for "states" and "default" blocks, used for actor classes -->
-<!-- These have a different syntax from the rest, so they need both different contextes, like they're different languages. -->
-                <StringDetect attribute="Directive" context="#pop!initiatedefaultblock" name="InitiateDefaultBlock" 
-                String="default" insensitive="true" />
-                <StringDetect attribute="Directive" context="#pop!initiatestatesblock" name="InitiateStatesBlock" 
-                String="states" insensitive="true" />
-            </context>
-<!-- List of "inner" contextes -->
-<!-- Strings -->
-            <context name="string" attribute="String" lineEndContext="#stay">
-                <DetectChar attribute="String" context="#pop" char="&quot;"/>
-            </context>
-<!-- Strings without escaping -->
-            <context name="uestring" attribute="Un-Eascaped-String" lineEndContext="#stay">
-                <DetectChar attribute="Un-Eascaped-String" context="#pop" char="&apos;"/>
-            </context>
-<!-- Comments -->
-            <context name="comment" attribute="Comment" lineEndContext="#pop">
-                <Detect2Chars attribute="Comment" context="#stay" char="/" char1="/"/>
-            </context>
-<!-- Multiple line comments -->
-            <context name="Multi-line Comment" attribute="Comment" lineEndContext="#stay">
-                <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" dynamic="true" endRegion="RegionComment"/>
-            </context>
-<!-- Import statemens -->
-            <context name="import" attribute="Import" lineEndContext="#pop">
-                <DetectChar attribute="Import" context="#pop" char=" "/>
-            </context>
-<!-- Default block contextes -->
-<!-- Initiation -->
-            <context name="initiatedefaultblock" attribute="Normal" lineEndContext="#stay">
-                <DetectChar attribute="Normal" context="#pop!defaultblock" char="{"/>
-            </context>
-<!-- Syntaxt -->
-            <context name="defaultblock" attribute="Normal" lineEndContext="#stay">
-                <DetectChar attribute="Normal" context="#pop" char="}"/>
-                <DetectChar attribute="Normal" context="attribute" name="Attribute" char="+"/>
-                <DetectChar attribute="String" context="string" char="&quot;"/>
-                <Float attribute="Integer" context="#stay"/>
-                <Int attribute="Integer" context="#stay"/>
-            </context>
-<!-- Attributes -->
-            <context name="attribute" attribute="Attribute" lineEndContext="#pop">
-                <DetectChar attribute="Attribute" context="#pop" char=" "/>
-            </context>
-<!-- States block contextes -->
-<!-- Initiation -->
-            <context name="initiatestatesblock" attribute="Normal" lineEndContext="#stay">
-                <DetectChar attribute="Normal" context="#pop!statesblock" char="{"/>
-            </context>
-<!-- Syntaxt -->
-            <context name="statesblock" attribute="StatesBlock" lineEndContext="#stay">
-                <DetectChar attribute="Normal" context="#pop" char="}"/>
+                <DetectSpaces />
+                <keyword attribute="Keyword" context="#stay" String="Standard" />
+                <Float attribute="Integer" context="#stay" />
+                <Int attribute="Integer" context="#stay" />
+                <keyword attribute="Type" context="#stay" String="Types" />
+                <keyword attribute="Directive" context="#stay" String="Directives" />
+                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow" />
+                <keyword attribute="Operator" context="#stay" String="Operators" />
                 <DetectChar attribute="String" context="string" char="&quot;" />
-                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow"/>
-                <keyword attribute="ControlFlow" context="#stay" String="StateControlFlow"/>
-                <keyword attribute="State" context="#stay" String="States"/>
-                <keyword attribute="Keyword" context="#stay" String="StateKeywords"/>
-                <RegExpr attribute="Function" context="#stay" name="Function" String="(?:\w+?(?=\s*?\())"/>
-                <RegExpr attribute="Function" context="#stay" name="Function" String="(?:A_(?&lt;=A_)\S*?(?=;))"/>
-                <Float attribute="Integer" context="#stay"/>
-                <Int attribute="Integer" context="#stay"/>
+                <DetectChar attribute="Un-Eascaped-String" context="uestring" char="&apos;" />
+                <Detect2Chars attribute="Comment" context="comment" char="/" char1="/" />
+                <Detect2Chars attribute="Comment" context="Multi-line Comment" char="/" char1="*" beginRegion="RegionComment" />
+                <DetectChar attribute="Import" context="import" char="#" />
+                <RegExpr attribute="Function" context="#stay" String="(?:\w+?(?=\s*?\())" />
+                <!-- Lines for "states" and "default" blocks, used for actor classes -->
+                <!-- These have a different syntax from the rest, so they need both different contextes, like they're different languages. -->
+                <StringDetect attribute="Directive" context="#pop!initiatedefaultblock" String="default" insensitive="true" />
+                <StringDetect attribute="Directive" context="#pop!initiatestatesblock" String="states" insensitive="true" />
+            </context>
+            <!-- List of "inner" contextes -->
+            <!-- Strings -->
+            <context name="string" attribute="String" lineEndContext="#stay">
+                <DetectChar attribute="String" context="#pop" char="&quot;" />
+            </context>
+            <!-- Strings without escaping -->
+            <context name="uestring" attribute="Un-Eascaped-String" lineEndContext="#stay">
+                <DetectChar attribute="Un-Eascaped-String" context="#pop" char="&apos;" />
+            </context>
+            <!-- Comments -->
+            <context name="comment" attribute="Comment" lineEndContext="#pop">
+                <Detect2Chars attribute="Comment" context="#stay" char="/" char1="/" />
+            </context>
+            <!-- Multiple line comments -->
+            <context name="Multi-line Comment" attribute="Comment" lineEndContext="#stay">
+                <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="RegionComment" />
+            </context>
+            <!-- Import statemens -->
+            <context name="import" attribute="Import" lineEndContext="#pop">
+                <DetectChar attribute="Import" context="#pop" char=" " />
+            </context>
+            <!-- Default block contextes -->
+            <!-- Initiation -->
+            <context name="initiatedefaultblock" attribute="Normal" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop!defaultblock" char="{" />
+            </context>
+            <!-- Syntaxt -->
+            <context name="defaultblock" attribute="Normal" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop" char="}" />
+                <DetectChar attribute="Normal" context="attribute" char="+" />
+                <DetectChar attribute="String" context="string" char="&quot;" />
+                <Float attribute="Integer" context="#stay" />
+                <Int attribute="Integer" context="#stay" />
+            </context>
+            <!-- Attributes -->
+            <context name="attribute" attribute="Attribute" lineEndContext="#pop">
+                <DetectChar attribute="Attribute" context="#pop" char=" " />
+            </context>
+            <!-- States block contextes -->
+            <!-- Initiation -->
+            <context name="initiatestatesblock" attribute="Normal" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop!statesblock" char="{" />
+            </context>
+            <!-- Syntaxt -->
+            <context name="statesblock" attribute="StatesBlock" lineEndContext="#stay">
+                <DetectChar attribute="Normal" context="#pop" char="}" />
+                <DetectChar attribute="String" context="string" char="&quot;" />
+                <keyword attribute="ControlFlow" context="#stay" String="ControlFlow" />
+                <keyword attribute="ControlFlow" context="#stay" String="StateControlFlow" />
+                <keyword attribute="State" context="#stay" String="States" />
+                <keyword attribute="Keyword" context="#stay" String="StateKeywords" />
+                <RegExpr attribute="Function" context="#stay" String="(?:\w+?(?=\s*?\())" />
+                <RegExpr attribute="Function" context="#stay" String="(?:A_(?&lt;=A_)\S*?(?=;))" />
+                <Float attribute="Integer" context="#stay" />
+                <Int attribute="Integer" context="#stay" />
             </context>
         </contexts>
-<!-- List of the itemDatas (the ones that give the elements colours) -->
+        <!-- List of the itemDatas (the ones that give the elements colours) -->
         <itemDatas>
-            <itemData name="Normal" defStyleNum="dsNormal"/>
-            <itemData name="Keyword" defStyleNum="dsKeyword"/>
-            <itemData name="String" defStyleNum="dsString"/>
-            <itemData name="Un-Eascaped-String" defStyleNum="dsVerbatimString"/>
-            <itemData name="Comment" defStyleNum="dsComment"/>
-            <itemData name="Import" defStyleNum="dsImport"/>
-            <itemData name="Type" defStyleNum="dsDataType"/>
-            <itemData name="Directive" defStyleNum="dsExtension"/>
-            <itemData name="ControlFlow" defStyleNum="dsControlFlow"/>
-            <itemData name="Operator" defStyleNum="dsOperator"/>
-            <itemData name="Function" defStyleNum="dsFunction"/>
-            <itemData name="Attribute" defStyleNum="dsAttribute"/>
-            <itemData name="State" defStyleNum="dsDataType"/>
-            <itemData name="Integer" defStyleNum="dsDecVal"/>
-            <itemData name="Float" defStyleNum="dsFloat"/>
+            <itemData name="Normal" defStyleNum="dsNormal" />
+            <itemData name="Keyword" defStyleNum="dsKeyword" />
+            <itemData name="String" defStyleNum="dsString" />
+            <itemData name="Un-Eascaped-String" defStyleNum="dsVerbatimString" />
+            <itemData name="Comment" defStyleNum="dsComment" />
+            <itemData name="Import" defStyleNum="dsImport" />
+            <itemData name="Type" defStyleNum="dsDataType" />
+            <itemData name="Directive" defStyleNum="dsExtension" />
+            <itemData name="ControlFlow" defStyleNum="dsControlFlow" />
+            <itemData name="Operator" defStyleNum="dsOperator" />
+            <itemData name="Function" defStyleNum="dsFunction" />
+            <itemData name="Attribute" defStyleNum="dsAttribute" />
+            <itemData name="State" defStyleNum="dsDataType" />
+            <itemData name="Integer" defStyleNum="dsDecVal" />
+            <itemData name="Float" defStyleNum="dsFloat" />
         </itemDatas>
     </highlighting>
-<!-- Syntax configuration -->
+    <!-- Syntax configuration -->
     <general>
-<!-- Quick comment (Ctrl + /) configuration -->
+        <!-- Quick comment (Ctrl + /) configuration -->
         <comments>
-            <comment name="singleLine" start="//"/>
-            <comment name="multiLine" start="/*" end="*/"/>
+            <comment name="singleLine" start="//" />
+            <comment name="multiLine" start="/*" end="*/" />
         </comments>
-<!-- Keywords are case sensitive -->
-        <keywords casesensitive="0"/>
-        <folding indentationsensitive="1"/>
+        <!-- Keywords are case sensitive -->
+        <keywords casesensitive="0" />
+        <folding indentationsensitive="1" />
     </general>
 </language>
