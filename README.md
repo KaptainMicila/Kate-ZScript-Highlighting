@@ -1,3 +1,8 @@
+# ARCHIVED
+I simply moved on.
+
+If you don't mind using Microsoft's tech, use this more competently made [Visual Studio Code extension for UZDoom](https://github.com/UZDoom/UZDoom-VSCode).
+
 # Kate-ZScript-Highlighting
 [ZDoom ZScript](https://zdoom.org/wiki/ZScript) syntax highlighter for [KDE's Kate text editor](https://kate-editor.org/).
 
